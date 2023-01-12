@@ -59,4 +59,7 @@ dependencies {
     // Koin for Android
     implementation "io.insert-koin:koin-android:3.3.2"
     implementation "io.insert-koin:koin-core:3.3.2"
+
+    implementation "com.squareup.moshi:moshi:1.14.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
 }
