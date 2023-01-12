@@ -1,14 +1,35 @@
 package life.league.challenge.kotlin.di
 
+import life.league.challenge.kotlin.commom.CoroutineDispatcherProvider
+import life.league.challenge.kotlin.domain.usecase.LoginUseCase
+import life.league.challenge.kotlin.domain.usecase.LoginUseCaseImpl
+import life.league.challenge.kotlin.ui.main.MainViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 //object to hold MainScreen dependencies
 object MainModule {
     private val instance: Module = module {
+        viewModel {
+            MainViewModel(
+                loginUseCase = get(),
+                dispatcherProvider = get()
+            )
+        }
+        factory<LoginUseCase> {
+            LoginUseCaseImpl(
+                loginRepository = get()
+            )
+        }
+        factory<CoroutineDispatcherProvider> {
+            CoroutineDispatcherProvider()
+        }
 
     }
 
-    //todo use this when load dependency injection modules
-    val modules = instance + RetrofitModule.instance
+    val modules = instance +
+            RetrofitModule.instance +
+            LoginModule.instance
+
 }
