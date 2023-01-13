@@ -11,7 +11,6 @@ import life.league.challenge.kotlin.domain.exceptions.UnableToLoginException
 import life.league.challenge.kotlin.domain.usecase.LoginUseCase
 import life.league.challenge.kotlin.domain.usecase.PostsUseCase
 
-
 class MainViewModel(
     private val loginUseCase: LoginUseCase,
     private val postsUseCase: PostsUseCase,
@@ -43,5 +42,4 @@ class MainViewModel(
         val temp = result
         temp.toString()
     }
-
 }

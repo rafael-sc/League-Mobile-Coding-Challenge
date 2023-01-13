@@ -1,6 +1,5 @@
 package life.league.challenge.kotlin.data.model.request
 
-
 data class LoginBody(val username: String, val password: String)
 
 fun LoginBody.asBasicEncodedString(): String =

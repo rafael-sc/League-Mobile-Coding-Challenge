@@ -28,7 +28,6 @@ object RetrofitModule {
         single(OkHttpClientBuilderQualifier) {
             provideOkHttpClientBuilderQualifier(httpLoggingInterceptor)
         }
-
     }
 
     private fun provideRetrofit(okHttpClientBuilder: OkHttpClient.Builder) =

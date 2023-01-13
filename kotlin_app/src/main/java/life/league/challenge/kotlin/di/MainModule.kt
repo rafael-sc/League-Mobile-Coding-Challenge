@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-//object to hold MainScreen dependencies
+// object to hold MainScreen dependencies
 object MainModule {
     private val instance: Module = module {
         viewModel {
@@ -33,12 +33,10 @@ object MainModule {
         factory<CoroutineDispatcherProvider> {
             CoroutineDispatcherProvider()
         }
-
     }
 
     val modules = instance +
-            RetrofitModule.instance +
-            LoginModule.instance +
-            PostsModule.instance
-
+        RetrofitModule.instance +
+        LoginModule.instance +
+        PostsModule.instance
 }

@@ -7,12 +7,11 @@ import life.league.challenge.kotlin.domain.exceptions.UnableToLoginException
 import life.league.challenge.kotlin.domain.repository.LoginRepository
 
 class LoginRepositoryImpl(
-    private val loginApi: LoginApi,
+    private val loginApi: LoginApi
 ) : LoginRepository {
 
     override suspend fun login(username: String, password: String): String {
         val login = LoginBody(username, password).asBasicEncodedString()
         return loginApi.login(login).body()?.apiKey ?: throw UnableToLoginException()
     }
-
 }

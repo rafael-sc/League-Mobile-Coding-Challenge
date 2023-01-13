@@ -10,7 +10,6 @@ import life.league.challenge.kotlin.domain.exceptions.UnableToLoginException
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 
-
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
@@ -42,10 +41,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun errorStateObserver(exception: Throwable) {
-        val message = if (exception is UnableToLoginException)
+        val message = if (exception is UnableToLoginException) {
             "Unable to login"
-        else
+        } else {
             "Unhandled exception - ${exception.message}"
+        }
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
@@ -53,5 +53,4 @@ class MainActivity : AppCompatActivity() {
     private fun loginStateObserver(isValidLogin: Boolean) {
         Toast.makeText(this, "Is valid login: $isValidLogin", Toast.LENGTH_SHORT).show()
     }
-
 }

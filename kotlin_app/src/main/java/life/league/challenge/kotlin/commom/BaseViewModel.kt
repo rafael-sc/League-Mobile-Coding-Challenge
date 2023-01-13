@@ -19,7 +19,7 @@ abstract class BaseViewModel(
 
     @CallSuper
     private fun handleException(throwable: Throwable) {
-        //log to crashlytics or something like it
+        // log to crashlytics or something like it
         Log.e("Exception", throwable.message.orEmpty())
         throwable.printStackTrace()
         return
