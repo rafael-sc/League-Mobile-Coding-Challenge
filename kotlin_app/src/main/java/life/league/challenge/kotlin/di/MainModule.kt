@@ -3,6 +3,8 @@ package life.league.challenge.kotlin.di
 import life.league.challenge.kotlin.commom.CoroutineDispatcherProvider
 import life.league.challenge.kotlin.domain.usecase.LoginUseCase
 import life.league.challenge.kotlin.domain.usecase.LoginUseCaseImpl
+import life.league.challenge.kotlin.domain.usecase.PostsUseCase
+import life.league.challenge.kotlin.domain.usecase.PostsUseCaseImpl
 import life.league.challenge.kotlin.ui.main.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -14,6 +16,7 @@ object MainModule {
         viewModel {
             MainViewModel(
                 loginUseCase = get(),
+                postsUseCase = get(),
                 dispatcherProvider = get()
             )
         }
@@ -21,6 +24,9 @@ object MainModule {
             LoginUseCaseImpl(
                 loginRepository = get()
             )
+        }
+        factory<PostsUseCase> {
+            PostsUseCaseImpl()
         }
         factory<CoroutineDispatcherProvider> {
             CoroutineDispatcherProvider()
