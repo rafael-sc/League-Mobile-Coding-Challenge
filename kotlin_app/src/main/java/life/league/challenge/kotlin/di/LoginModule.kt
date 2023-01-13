@@ -18,8 +18,6 @@ object LoginModule {
                 get(qualifier = RetrofitQualifier)
             )
         }
-
-
     }
 
     private fun provideLoginApi(retrofit: Retrofit) = retrofit.create(LoginApi::class.java)

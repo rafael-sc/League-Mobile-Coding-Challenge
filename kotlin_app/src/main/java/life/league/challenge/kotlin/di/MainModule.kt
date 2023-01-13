@@ -26,7 +26,9 @@ object MainModule {
             )
         }
         factory<PostsUseCase> {
-            PostsUseCaseImpl()
+            PostsUseCaseImpl(
+                postsRepository = get()
+            )
         }
         factory<CoroutineDispatcherProvider> {
             CoroutineDispatcherProvider()
@@ -36,6 +38,7 @@ object MainModule {
 
     val modules = instance +
             RetrofitModule.instance +
-            LoginModule.instance
+            LoginModule.instance +
+            PostsModule.instance
 
 }

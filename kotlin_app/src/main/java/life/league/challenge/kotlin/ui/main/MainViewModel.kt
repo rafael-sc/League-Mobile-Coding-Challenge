@@ -28,7 +28,7 @@ class MainViewModel(
     }
 
     private fun requestPosts() = viewModelScope.launch(ioProvider) {
-        val result = postsUseCase.getPosts()
+        val result = postsUseCase.getPosts("temp")
     }
 
 }
