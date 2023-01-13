@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import life.league.challenge.kotlin.commom.BaseViewModel
 import life.league.challenge.kotlin.commom.CoroutineDispatcherProvider
+import life.league.challenge.kotlin.domain.exceptions.UnableToLoginException
 import life.league.challenge.kotlin.domain.usecase.LoginUseCase
 import life.league.challenge.kotlin.domain.usecase.PostsUseCase
 
@@ -20,15 +21,27 @@ class MainViewModel(
     private val loginState = MutableSharedFlow<Boolean>()
     fun loginState(): SharedFlow<Boolean> = loginState
 
-    fun initLogin() = viewModelScope.launch(ioProvider) {
-        val result = loginUseCase.login("hello", "world")
-        withContext(mainProvider) {
-            loginState.emit(result.isNullOrEmpty().not())
+    private val errorState = MutableSharedFlow<Throwable>()
+    fun errorState(): SharedFlow<Throwable> = errorState
+
+    fun initLogin() = try {
+        viewModelScope.launch(ioExceptionHandler) {
+            val result = loginUseCase.login("hello", "world")
+            withContext(mainExceptionHandler) {
+                getPosts(result)
+                loginState.emit(result.isNotEmpty())
+            }
+        }
+    } catch (e: UnableToLoginException) {
+        viewModelScope.launch(mainExceptionHandler) {
+            errorState.emit(e)
         }
     }
 
-    private fun requestPosts() = viewModelScope.launch(ioProvider) {
-        val result = postsUseCase.getPosts("temp")
+    private fun getPosts(accessToken: String) = viewModelScope.launch(ioExceptionHandler) {
+        val result = postsUseCase.getPosts(accessToken)
+        val temp = result
+        temp.toString()
     }
 
 }
