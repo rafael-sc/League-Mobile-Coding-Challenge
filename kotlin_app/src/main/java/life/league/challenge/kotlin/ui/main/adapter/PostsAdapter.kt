@@ -29,7 +29,7 @@ class PostsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val binding: PostItemLayoutBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: Post) {
-            binding.textViewPostAuthorName.text = item.userId.toString()
+            binding.textViewPostAuthorName.text = item.user.name
             binding.textViewPostContent.text = item.content
             binding.textViewPostTitle.text = item.title
         }

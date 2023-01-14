@@ -1,9 +1,9 @@
 package life.league.challenge.kotlin.data
 
-import android.util.Log
 import life.league.challenge.kotlin.api.PostsApi
 import life.league.challenge.kotlin.api.UsersApi
 import life.league.challenge.kotlin.domain.model.Post
+import life.league.challenge.kotlin.domain.model.User
 import life.league.challenge.kotlin.domain.repository.PostsRepository
 
 class PostsRepositoryImpl(
@@ -11,17 +11,28 @@ class PostsRepositoryImpl(
     private val usersApi: UsersApi
 ) : PostsRepository {
     override suspend fun getPosts(accessToken: String): List<Post> {
-        usersApi.getUsers(accessToken).map {
-            Log.d("User - ${it.id}", it.name)
-        }
-
-        return postsApi.getPosts(accessToken).map {
-            Post(
-                userId = it.userId,
+        val loadedUsers = usersApi.getUsers(accessToken).map {
+            User(
                 id = it.id,
-                title = it.title,
-                content = it.body.replace("\n", " ")
+                name = it.name,
+                avatarUrl = it.avatar
             )
         }
+
+        val postsList: MutableList<Post> = mutableListOf()
+        postsApi.getPosts(accessToken).map { postItem ->
+            val user = loadedUsers.firstOrNull { it.id == postItem.userId }
+            if (user != null) {
+                postsList.add(
+                    Post(
+                        id = postItem.id,
+                        title = postItem.title,
+                        content = postItem.body.replace("\n", " "),
+                        user = user
+                    )
+                )
+            }
+        }
+        return postsList
     }
 }
