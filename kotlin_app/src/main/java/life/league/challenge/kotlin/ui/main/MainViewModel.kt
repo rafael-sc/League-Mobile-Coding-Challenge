@@ -33,7 +33,7 @@ class MainViewModel(
         viewModelScope.launch(ioExceptionHandler) {
             val result = loginUseCase.login("hello", "world")
             withContext(mainExceptionHandler) {
-                getPosts(result)
+                getPosts()
                 loginState.emit(result.isNotEmpty())
             }
         }
@@ -43,8 +43,8 @@ class MainViewModel(
         }
     }
 
-    private fun getPosts(accessToken: String) = viewModelScope.launch(ioExceptionHandler) {
-        val result = postsUseCase.getPosts(accessToken)
+    private fun getPosts() = viewModelScope.launch(ioExceptionHandler) {
+        val result = postsUseCase.getPosts()
         loadedPosts.clear()
         loadedPosts.addAll(result)
         withContext(mainExceptionHandler) {

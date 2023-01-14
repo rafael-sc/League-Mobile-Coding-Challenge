@@ -6,7 +6,7 @@ import life.league.challenge.kotlin.domain.repository.PostsRepository
 class PostsUseCaseImpl(
     private val postsRepository: PostsRepository
 ) : PostsUseCase {
-    override suspend fun getPosts(accessToken: String): List<Post> {
-        return postsRepository.getPosts(accessToken)
+    override suspend fun getPosts(): List<Post> {
+        return postsRepository.getPosts()
     }
 }

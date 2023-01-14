@@ -10,8 +10,8 @@ class PostsRepositoryImpl(
     private val postsApi: PostsApi,
     private val usersApi: UsersApi
 ) : PostsRepository {
-    override suspend fun getPosts(accessToken: String): List<Post> {
-        val loadedUsers = usersApi.getUsers(accessToken).map {
+    override suspend fun getPosts(): List<Post> {
+        val loadedUsers = usersApi.getUsers().map {
             User(
                 id = it.id,
                 name = it.name,
@@ -20,7 +20,7 @@ class PostsRepositoryImpl(
         }
 
         val postsList: MutableList<Post> = mutableListOf()
-        postsApi.getPosts(accessToken).map { postItem ->
+        postsApi.getPosts().map { postItem ->
             val user = loadedUsers.firstOrNull { it.id == postItem.userId }
             if (user != null) {
                 postsList.add(
