@@ -1,11 +1,11 @@
 package life.league.challenge.kotlin.ui.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import life.league.challenge.kotlin.R
 import life.league.challenge.kotlin.commom.exceptions.UnableToGetPostsException
 import life.league.challenge.kotlin.commom.exceptions.UnableToGetUsersException
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupObserver()
+        viewModel.getPosts()
     }
 
     private fun setupObserver() {
@@ -58,7 +59,11 @@ class MainActivity : AppCompatActivity() {
             is UnableToGetPostsException -> getString(R.string.error_unable_get_posts)
             else -> getString(R.string.error_generic_message)
         }
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
+            .setAction("Retry") {
+                viewModel.getPosts()
+            }
+            .show()
     }
 
     private fun loadingStateObserver(isLoading: Boolean) {

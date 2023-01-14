@@ -29,11 +29,7 @@ class MainViewModel(
 
     private val loadedPosts: MutableList<Post> = mutableListOf()
 
-    init {
-        getPosts()
-    }
-
-    private fun getPosts() = viewModelScope.launch(mainExceptionHandler) {
+    fun getPosts() = viewModelScope.launch(mainExceptionHandler) {
         loadingState.emit(true)
         try {
             withContext(ioExceptionHandler) {
