@@ -7,13 +7,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import life.league.challenge.kotlin.commom.BaseViewModel
 import life.league.challenge.kotlin.commom.CoroutineDispatcherProvider
+import life.league.challenge.kotlin.commom.exceptions.UnableToGetPostsException
+import life.league.challenge.kotlin.commom.exceptions.UnableToGetUsersException
 import life.league.challenge.kotlin.commom.exceptions.UnableToLoginException
 import life.league.challenge.kotlin.domain.model.Post
-import life.league.challenge.kotlin.domain.usecase.login.LoginUseCase
 import life.league.challenge.kotlin.domain.usecase.posts.PostsUseCase
 
 class MainViewModel(
-    private val loginUseCase: LoginUseCase,
     private val postsUseCase: PostsUseCase,
     dispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel(dispatcherProvider) {
@@ -29,24 +29,23 @@ class MainViewModel(
 
     private val loadedPosts: MutableList<Post> = mutableListOf()
 
-    fun initLogin() = try {
-        viewModelScope.launch(ioExceptionHandler) {
-            val result = loginUseCase.login("hello", "world")
-            withContext(mainExceptionHandler) {
-                getPosts()
-                loginState.emit(result.isNotEmpty())
-            }
-        }
-    } catch (e: UnableToLoginException) {
-        viewModelScope.launch(mainExceptionHandler) {
-            errorState.emit(e)
-        }
+    init {
+        getPosts()
     }
 
     private fun getPosts() = viewModelScope.launch(ioExceptionHandler) {
-        val result = postsUseCase.getPosts()
-        loadedPosts.clear()
-        loadedPosts.addAll(result)
+        try {
+            val result = postsUseCase.getPosts()
+            loadedPosts.clear()
+            loadedPosts.addAll(result)
+        } catch (e: UnableToGetPostsException) {
+            errorState.emit(e)
+        } catch (e: UnableToGetUsersException) {
+            errorState.emit(e)
+        } catch (e: UnableToLoginException) {
+            errorState.emit(e)
+        }
+
         withContext(mainExceptionHandler) {
             posts.emit(loadedPosts)
         }

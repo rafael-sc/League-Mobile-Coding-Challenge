@@ -5,6 +5,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import life.league.challenge.kotlin.R
+import life.league.challenge.kotlin.commom.exceptions.UnableToGetPostsException
+import life.league.challenge.kotlin.commom.exceptions.UnableToGetUsersException
 import life.league.challenge.kotlin.commom.exceptions.UnableToLoginException
 import life.league.challenge.kotlin.commom.extensions.setupObserverOnCreated
 import life.league.challenge.kotlin.databinding.ActivityMainBinding
@@ -28,16 +31,7 @@ class MainActivity : AppCompatActivity() {
         loadKoinModules(MainModule.modules)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initViews()
         setupObserver()
-    }
-
-    private fun initViews() {
-        binding.run {
-            buttonLogin.setOnClickListener {
-                viewModel.initLogin()
-            }
-        }
     }
 
     private fun setupObserver() {
@@ -56,12 +50,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun errorStateObserver(exception: Throwable) {
-        val message = if (exception is UnableToLoginException) {
-            "Unable to login"
-        } else {
-            "Unhandled exception - ${exception.message}"
+    private fun errorStateObserver(e: Throwable) {
+        val message = when (e) {
+            is UnableToLoginException -> getString(R.string.error_unable_to_login)
+            is UnableToGetUsersException -> getString(R.string.error_unable_get_users)
+            is UnableToGetPostsException -> getString(R.string.error_unable_get_posts)
+            else -> getString(R.string.error_generic_message)
         }
+
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 

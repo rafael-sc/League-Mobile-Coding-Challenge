@@ -2,4 +2,8 @@
     <string name="app_name">Mobile Coding Challenge</string>
     <string name="description_author_icon">%1$s icon</string>
     <string name="login">Login</string>
+    <string name="error_unable_to_login">Unable to login, please verify your credentials.</string>
+    <string name="error_unable_get_users">Unable to load users, try again later.</string>
+    <string name="error_unable_get_posts">Unable to load posts, try again later.</string>
+    <string name="error_generic_message">Generic error message</string>
 </resources>

@@ -15,19 +15,20 @@ object MainModule {
     private val instance: Module = module {
         viewModel {
             MainViewModel(
-                loginUseCase = get(),
                 postsUseCase = get(),
                 dispatcherProvider = get()
+            )
+        }
+
+        factory<PostsUseCase> {
+            PostsUseCaseImpl(
+                postsRepository = get(),
+                loginRepository = get()
             )
         }
         factory<LoginUseCase> {
             LoginUseCaseImpl(
                 loginRepository = get()
-            )
-        }
-        factory<PostsUseCase> {
-            PostsUseCaseImpl(
-                postsRepository = get()
             )
         }
         factory<CoroutineDispatcherProvider> {
