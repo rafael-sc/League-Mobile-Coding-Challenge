@@ -1,6 +1,7 @@
 package life.league.challenge.kotlin.di
 
 import life.league.challenge.kotlin.BuildConfig
+import life.league.challenge.kotlin.data.api.ApiCallInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -25,8 +26,14 @@ object RetrofitModule {
         val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(
             if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         )
+
         single(OkHttpClientBuilderQualifier) {
-            provideOkHttpClientBuilderQualifier(httpLoggingInterceptor)
+            provideOkHttpClientBuilderQualifier(
+                httpLoggingInterceptor,
+                ApiCallInterceptor(
+                    accessTokenDataSource = get()
+                )
+            )
         }
     }
 
