@@ -27,6 +27,8 @@ class MainViewModel(
     private val posts = MutableSharedFlow<List<Post>>()
     fun posts(): SharedFlow<List<Post>> = posts
 
+    private val loadedPosts: MutableList<Post> = mutableListOf()
+
     fun initLogin() = try {
         viewModelScope.launch(ioExceptionHandler) {
             val result = loginUseCase.login("hello", "world")
@@ -43,9 +45,10 @@ class MainViewModel(
 
     private fun getPosts(accessToken: String) = viewModelScope.launch(ioExceptionHandler) {
         val result = postsUseCase.getPosts(accessToken)
-
+        loadedPosts.clear()
+        loadedPosts.addAll(result)
         withContext(mainExceptionHandler) {
-            posts.emit(result)
+            posts.emit(loadedPosts)
         }
     }
 }

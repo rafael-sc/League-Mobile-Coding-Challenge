@@ -3,6 +3,9 @@ package life.league.challenge.kotlin.ui.main.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
+import life.league.challenge.kotlin.R
 import life.league.challenge.kotlin.databinding.PostItemLayoutBinding
 import life.league.challenge.kotlin.domain.model.Post
 
@@ -29,6 +32,12 @@ class PostsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val binding: PostItemLayoutBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: Post) {
+            binding.imageViewPostAuthorIcon.load(item.user.avatarUrl) {
+                crossfade(true)
+                placeholder(R.drawable.avatar_placeholder)
+                transformations(CircleCropTransformation())
+            }
+
             binding.textViewPostAuthorName.text = item.user.name
             binding.textViewPostContent.text = item.content
             binding.textViewPostTitle.text = item.title
