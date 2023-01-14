@@ -5,10 +5,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import life.league.challenge.kotlin.commom.exceptions.UnableToLoginException
 import life.league.challenge.kotlin.commom.extensions.setupObserverOnCreated
 import life.league.challenge.kotlin.databinding.ActivityMainBinding
 import life.league.challenge.kotlin.di.MainModule
-import life.league.challenge.kotlin.domain.exceptions.UnableToLoginException
 import life.league.challenge.kotlin.domain.model.Post
 import life.league.challenge.kotlin.ui.main.adapter.PostsAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel

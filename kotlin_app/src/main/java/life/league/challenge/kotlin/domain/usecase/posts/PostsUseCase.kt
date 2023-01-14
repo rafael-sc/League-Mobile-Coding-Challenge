@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.domain.usecase
+package life.league.challenge.kotlin.domain.usecase.posts
 
 import life.league.challenge.kotlin.domain.model.Post
 

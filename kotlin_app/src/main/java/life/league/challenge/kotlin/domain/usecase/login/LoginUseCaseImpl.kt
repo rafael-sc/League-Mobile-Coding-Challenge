@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.domain.usecase
+package life.league.challenge.kotlin.domain.usecase.login
 
 import life.league.challenge.kotlin.domain.repository.LoginRepository
 

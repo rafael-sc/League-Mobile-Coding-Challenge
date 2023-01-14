@@ -1,10 +1,10 @@
 package life.league.challenge.kotlin.di
 
 import life.league.challenge.kotlin.commom.CoroutineDispatcherProvider
-import life.league.challenge.kotlin.domain.usecase.LoginUseCase
-import life.league.challenge.kotlin.domain.usecase.LoginUseCaseImpl
-import life.league.challenge.kotlin.domain.usecase.PostsUseCase
-import life.league.challenge.kotlin.domain.usecase.PostsUseCaseImpl
+import life.league.challenge.kotlin.domain.usecase.login.LoginUseCase
+import life.league.challenge.kotlin.domain.usecase.login.LoginUseCaseImpl
+import life.league.challenge.kotlin.domain.usecase.posts.PostsUseCase
+import life.league.challenge.kotlin.domain.usecase.posts.PostsUseCaseImpl
 import life.league.challenge.kotlin.ui.main.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module

@@ -1,8 +1,8 @@
 package life.league.challenge.kotlin.di
 
-import life.league.challenge.kotlin.api.PostsApi
-import life.league.challenge.kotlin.api.UsersApi
 import life.league.challenge.kotlin.data.PostsRepositoryImpl
+import life.league.challenge.kotlin.data.api.PostsApi
+import life.league.challenge.kotlin.data.api.UsersApi
 import life.league.challenge.kotlin.domain.repository.PostsRepository
 import org.koin.dsl.module
 import retrofit2.Retrofit

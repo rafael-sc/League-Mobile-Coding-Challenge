@@ -1,7 +1,7 @@
 package life.league.challenge.kotlin.data
 
-import life.league.challenge.kotlin.api.PostsApi
-import life.league.challenge.kotlin.api.UsersApi
+import life.league.challenge.kotlin.data.api.PostsApi
+import life.league.challenge.kotlin.data.api.UsersApi
 import life.league.challenge.kotlin.domain.model.Post
 import life.league.challenge.kotlin.domain.model.User
 import life.league.challenge.kotlin.domain.repository.PostsRepository

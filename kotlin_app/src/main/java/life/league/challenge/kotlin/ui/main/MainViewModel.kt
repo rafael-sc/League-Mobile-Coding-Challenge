@@ -7,10 +7,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import life.league.challenge.kotlin.commom.BaseViewModel
 import life.league.challenge.kotlin.commom.CoroutineDispatcherProvider
-import life.league.challenge.kotlin.domain.exceptions.UnableToLoginException
+import life.league.challenge.kotlin.commom.exceptions.UnableToLoginException
 import life.league.challenge.kotlin.domain.model.Post
-import life.league.challenge.kotlin.domain.usecase.LoginUseCase
-import life.league.challenge.kotlin.domain.usecase.PostsUseCase
+import life.league.challenge.kotlin.domain.usecase.login.LoginUseCase
+import life.league.challenge.kotlin.domain.usecase.posts.PostsUseCase
 
 class MainViewModel(
     private val loginUseCase: LoginUseCase,
