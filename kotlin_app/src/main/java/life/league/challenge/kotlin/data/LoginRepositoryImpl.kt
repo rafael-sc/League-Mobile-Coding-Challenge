@@ -17,7 +17,8 @@ class LoginRepositoryImpl(
     }
 
     override suspend fun login(username: String, password: String): String {
-        return accessTokenDataSource.getAccessToken() ?: run {
+        val token = accessTokenDataSource.getAccessToken()
+        return token ?: run {
             val login = LoginBody(username, password).asBasicEncodedString()
             val accessToken = loginApi.login(login).body()?.apiKey ?: throw UnableToLoginException()
             accessTokenDataSource.setAccessToken(accessToken)

@@ -9,9 +9,12 @@ class PostsUseCaseImpl(
     private val loginRepository: LoginRepository,
     private val postsRepository: PostsRepository
 ) : PostsUseCase {
-    override suspend fun getPosts(): List<Post> {
+    override suspend fun getPosts(): List<Post> = if (loginRepository.isUserAuthenticated()) {
+        postsRepository.getPosts()
+    } else {
+        loginRepository.login("hello", "world")
         if (loginRepository.isUserAuthenticated()) {
-            return postsRepository.getPosts()
+            getPosts()
         } else {
             throw UnableToLoginException()
         }

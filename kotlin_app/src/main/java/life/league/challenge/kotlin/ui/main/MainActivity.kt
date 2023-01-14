@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         loadKoinModules(MainModule.modules)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setTitle(R.string.general_posts)
         setContentView(binding.root)
         setupObserver()
         viewModel.getPosts()
