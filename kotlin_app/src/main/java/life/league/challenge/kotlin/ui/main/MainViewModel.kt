@@ -18,8 +18,8 @@ class MainViewModel(
     dispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel(dispatcherProvider) {
 
-    private val loginState = MutableSharedFlow<Boolean>()
-    fun loginState(): SharedFlow<Boolean> = loginState
+    private val loadingState = MutableSharedFlow<Boolean>()
+    fun loadingState(): SharedFlow<Boolean> = loadingState
 
     private val errorState = MutableSharedFlow<Throwable>()
     fun errorState(): SharedFlow<Throwable> = errorState
@@ -33,11 +33,14 @@ class MainViewModel(
         getPosts()
     }
 
-    private fun getPosts() = viewModelScope.launch(ioExceptionHandler) {
+    private fun getPosts() = viewModelScope.launch(mainExceptionHandler) {
+        loadingState.emit(true)
         try {
-            val result = postsUseCase.getPosts()
-            loadedPosts.clear()
-            loadedPosts.addAll(result)
+            withContext(ioExceptionHandler) {
+                val result = postsUseCase.getPosts()
+                loadedPosts.clear()
+                loadedPosts.addAll(result)
+            }
         } catch (e: UnableToGetPostsException) {
             errorState.emit(e)
         } catch (e: UnableToGetUsersException) {
@@ -45,9 +48,7 @@ class MainViewModel(
         } catch (e: UnableToLoginException) {
             errorState.emit(e)
         }
-
-        withContext(mainExceptionHandler) {
-            posts.emit(loadedPosts)
-        }
+        posts.emit(loadedPosts)
+        loadingState.emit(false)
     }
 }

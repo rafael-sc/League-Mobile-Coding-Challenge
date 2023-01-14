@@ -3,6 +3,7 @@ package life.league.challenge.kotlin.ui.main
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import life.league.challenge.kotlin.R
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObserver() {
         viewModel.run {
-            setupObserverOnCreated(loginState() to ::loginStateObserver)
+            setupObserverOnCreated(loadingState() to ::loadingStateObserver)
             setupObserverOnCreated(errorState() to ::errorStateObserver)
             setupObserverOnCreated(posts() to ::postsObserver)
         }
@@ -57,11 +58,13 @@ class MainActivity : AppCompatActivity() {
             is UnableToGetPostsException -> getString(R.string.error_unable_get_posts)
             else -> getString(R.string.error_generic_message)
         }
-
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun loginStateObserver(isValidLogin: Boolean) {
-        Toast.makeText(this, "Is valid login: $isValidLogin", Toast.LENGTH_SHORT).show()
+    private fun loadingStateObserver(isLoading: Boolean) {
+        binding.run {
+            circularProgressIndicator.isVisible = isLoading
+            recyclerViewPosts.isVisible = isLoading.not()
+        }
     }
 }
