@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Mobile Coding Challenge</string>
+    <string name="general_posts">Posts</string>
     <string name="description_author_icon">%1$s icon</string>
     <string name="login">Login</string>
     <string name="error_unable_to_login">Unable to login, please verify your credentials.</string>
