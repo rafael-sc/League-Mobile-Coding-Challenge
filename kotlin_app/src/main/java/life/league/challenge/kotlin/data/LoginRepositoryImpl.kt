@@ -12,7 +12,7 @@ class LoginRepositoryImpl(
     private val accessTokenDataSource: AccessTokenDataSource
 ) : LoginRepository {
 
-    override fun isUserAuthenticated(): Boolean {
+    override suspend fun isUserAuthenticated(): Boolean {
         return accessTokenDataSource.getAccessToken().isNullOrEmpty().not()
     }
 
