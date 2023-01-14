@@ -7,6 +7,7 @@ import life.league.challenge.kotlin.commom.extensions.setupObserverOnCreated
 import life.league.challenge.kotlin.databinding.ActivityMainBinding
 import life.league.challenge.kotlin.di.MainModule
 import life.league.challenge.kotlin.domain.exceptions.UnableToLoginException
+import life.league.challenge.kotlin.domain.model.Post
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.loadKoinModules
 
@@ -37,7 +38,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.run {
             setupObserverOnCreated(loginState() to ::loginStateObserver)
             setupObserverOnCreated(errorState() to ::errorStateObserver)
+            setupObserverOnCreated(posts() to ::postsObserver)
         }
+    }
+
+    private fun postsObserver(posts: List<Post>) {
+        posts
     }
 
     private fun errorStateObserver(exception: Throwable) {
@@ -46,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             "Unhandled exception - ${exception.message}"
         }
-
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 

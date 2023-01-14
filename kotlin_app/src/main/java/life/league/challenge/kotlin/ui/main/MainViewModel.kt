@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import life.league.challenge.kotlin.commom.BaseViewModel
 import life.league.challenge.kotlin.commom.CoroutineDispatcherProvider
 import life.league.challenge.kotlin.domain.exceptions.UnableToLoginException
+import life.league.challenge.kotlin.domain.model.Post
 import life.league.challenge.kotlin.domain.usecase.LoginUseCase
 import life.league.challenge.kotlin.domain.usecase.PostsUseCase
 
@@ -22,6 +23,9 @@ class MainViewModel(
 
     private val errorState = MutableSharedFlow<Throwable>()
     fun errorState(): SharedFlow<Throwable> = errorState
+
+    private val posts = MutableSharedFlow<List<Post>>()
+    fun posts(): SharedFlow<List<Post>> = posts
 
     fun initLogin() = try {
         viewModelScope.launch(ioExceptionHandler) {
@@ -39,7 +43,9 @@ class MainViewModel(
 
     private fun getPosts(accessToken: String) = viewModelScope.launch(ioExceptionHandler) {
         val result = postsUseCase.getPosts(accessToken)
-        val temp = result
-        temp.toString()
+
+        withContext(mainExceptionHandler) {
+            posts.emit(result)
+        }
     }
 }

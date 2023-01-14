@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Mobile Coding Challenge</string>
+    <string name="description_author_icon">%1$s icon</string>
 </resources>
