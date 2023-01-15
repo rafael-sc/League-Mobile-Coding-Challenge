@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import life.league.challenge.kotlin.R
 import life.league.challenge.kotlin.commom.exceptions.ApiException
+import life.league.challenge.kotlin.commom.extensions.isConnected
 import life.league.challenge.kotlin.commom.extensions.setupObserverOnCreated
 import life.league.challenge.kotlin.databinding.ActivityMainBinding
 import life.league.challenge.kotlin.di.MainModule
@@ -32,7 +33,23 @@ class MainActivity : AppCompatActivity() {
         setTitle(R.string.general_posts)
         setContentView(binding.root)
         setupObserver()
-        viewModel.getPosts()
+        if (this.isConnected()) {
+            viewModel.getPosts()
+        } else {
+            showDisconnectedWarning()
+        }
+    }
+
+    private fun showDisconnectedWarning() {
+        Snackbar.make(
+            binding.root,
+            R.string.no_internet_connection_available,
+            Snackbar.LENGTH_INDEFINITE
+        ).setAction(R.string.general_retry) {
+            if (this.isConnected()) {
+                viewModel.getPosts()
+            }
+        }.show()
     }
 
     private fun setupObserver() {
@@ -59,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             else -> getString(R.string.error_generic_message)
         }
         Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
-            .setAction("Retry") {
+            .setAction(R.string.general_retry) {
                 viewModel.getPosts()
             }
             .show()

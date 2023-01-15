@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import life.league.challenge.kotlin.commom.BaseViewModel
 import life.league.challenge.kotlin.commom.CoroutineDispatcherProvider
 import life.league.challenge.kotlin.commom.exceptions.ApiException
@@ -18,9 +19,6 @@ class MainViewModel(
     private val loadingState = MutableSharedFlow<Boolean>()
     fun loadingState(): SharedFlow<Boolean> = loadingState
 
-    private val errorState = MutableSharedFlow<Throwable>()
-    fun errorState(): SharedFlow<Throwable> = errorState
-
     private val posts = MutableSharedFlow<List<Post>>()
     fun posts(): SharedFlow<List<Post>> = posts
 
@@ -29,9 +27,11 @@ class MainViewModel(
     fun getPosts() = viewModelScope.launch(mainExceptionHandler) {
         loadingState.emit(true)
         try {
-            val result = postsUseCase.getPosts()
-            loadedPosts.clear()
-            loadedPosts.addAll(result)
+            withContext(ioExceptionHandler) {
+                val result = postsUseCase.getPosts()
+                loadedPosts.clear()
+                loadedPosts.addAll(result)
+            }
         } catch (e: ApiException) {
             errorState.emit(e)
         }

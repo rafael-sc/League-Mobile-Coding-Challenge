@@ -7,4 +7,6 @@
     <string name="error_unable_get_users">Unable to load users, try again later.</string>
     <string name="error_unable_get_posts">Unable to load posts, try again later.</string>
     <string name="error_generic_message">Generic error message</string>
+    <string name="no_internet_connection_available">There\'s no internet connection available.</string>
+    <string name="general_retry">Retry</string>
 </resources>
