@@ -4,8 +4,8 @@ import life.league.challenge.kotlin.commom.exceptions.UnableToGetPostsException
 import life.league.challenge.kotlin.commom.exceptions.UnableToGetUsersException
 import life.league.challenge.kotlin.data.api.PostsApi
 import life.league.challenge.kotlin.data.api.UsersApi
+import life.league.challenge.kotlin.data.extensions.toDomain
 import life.league.challenge.kotlin.domain.model.Post
-import life.league.challenge.kotlin.domain.model.User
 import life.league.challenge.kotlin.domain.repository.PostsRepository
 
 class PostsRepositoryImpl(
@@ -14,11 +14,7 @@ class PostsRepositoryImpl(
 ) : PostsRepository {
     override suspend fun getPosts(): List<Post> {
         val loadedUsers = usersApi.getUsers().map {
-            User(
-                id = it.id,
-                name = it.name,
-                avatarUrl = it.avatar
-            )
+            it.toDomain()
         }
         if (loadedUsers.isEmpty()) throw UnableToGetUsersException()
 
@@ -27,12 +23,7 @@ class PostsRepositoryImpl(
             val user = loadedUsers.firstOrNull { it.id == postItem.userId }
             if (user != null) {
                 postsList.add(
-                    Post(
-                        id = postItem.id,
-                        title = postItem.title,
-                        content = postItem.body.replace("\n", " "),
-                        user = user
-                    )
+                    postItem.toDomain(user)
                 )
             }
         }
