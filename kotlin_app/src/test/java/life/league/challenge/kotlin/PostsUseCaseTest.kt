@@ -70,15 +70,16 @@ class PostsUseCaseTest {
     }
 
     @Test(expected = UnableToLoginException::class)
-    fun `getPosts() - user is not authenticated - should return mocked Posts`() = runTest {
-        // arrange
-        coEvery { loginRepository.isUserAuthenticated() } returns false
-        coEvery { loginRepository.login(any(), any()) } throws UnableToLoginException()
+    fun `getPosts() - user is not allowed to login - should throw UnableToLoginException`() =
+        runTest {
+            // arrange
+            coEvery { loginRepository.isUserAuthenticated() } returns false
+            coEvery { loginRepository.login(any(), any()) } throws UnableToLoginException()
 
-        // act
-        val receivedPosts = postsUseCase.getPosts()
+            // act
+            postsUseCase.getPosts()
 
-        // assert
-        receivedPosts shouldBe mockedPostsList
-    }
+            // assert
+            // test should throw UnableToLoginException
+        }
 }
