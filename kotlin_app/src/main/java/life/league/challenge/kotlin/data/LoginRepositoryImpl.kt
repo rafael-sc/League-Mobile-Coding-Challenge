@@ -1,6 +1,6 @@
 package life.league.challenge.kotlin.data
 
-import life.league.challenge.kotlin.commom.exceptions.UnableToLoginException
+import life.league.challenge.kotlin.commom.exceptions.ApiException
 import life.league.challenge.kotlin.data.api.LoginApi
 import life.league.challenge.kotlin.data.local.AccessTokenDataSource
 import life.league.challenge.kotlin.data.model.request.LoginBody
@@ -20,7 +20,8 @@ class LoginRepositoryImpl(
         val token = accessTokenDataSource.getAccessToken()
         return token ?: run {
             val login = LoginBody(username, password).asBasicEncodedString()
-            val accessToken = loginApi.login(login).body()?.apiKey ?: throw UnableToLoginException()
+            val accessToken =
+                loginApi.login(login).body()?.apiKey ?: throw ApiException.UnableToLoginException()
             accessTokenDataSource.setAccessToken(accessToken)
             return accessToken
         }

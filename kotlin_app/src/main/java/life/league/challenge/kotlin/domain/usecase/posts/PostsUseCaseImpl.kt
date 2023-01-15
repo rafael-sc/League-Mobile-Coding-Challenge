@@ -1,6 +1,6 @@
 package life.league.challenge.kotlin.domain.usecase.posts
 
-import life.league.challenge.kotlin.commom.exceptions.UnableToLoginException
+import life.league.challenge.kotlin.commom.exceptions.ApiException
 import life.league.challenge.kotlin.domain.model.Post
 import life.league.challenge.kotlin.domain.repository.LoginRepository
 import life.league.challenge.kotlin.domain.repository.PostsRepository
@@ -16,7 +16,7 @@ class PostsUseCaseImpl(
         if (loginRepository.isUserAuthenticated()) {
             getPosts()
         } else {
-            throw UnableToLoginException()
+            throw ApiException.UnableToLoginException()
         }
     }
 }

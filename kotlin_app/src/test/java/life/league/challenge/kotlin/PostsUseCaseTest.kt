@@ -6,7 +6,7 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import life.league.challenge.kotlin.commom.exceptions.UnableToLoginException
+import life.league.challenge.kotlin.commom.exceptions.ApiException
 import life.league.challenge.kotlin.domain.model.Post
 import life.league.challenge.kotlin.domain.model.User
 import life.league.challenge.kotlin.domain.repository.LoginRepository
@@ -69,12 +69,17 @@ class PostsUseCaseTest {
         receivedPosts shouldBe mockedPostsList
     }
 
-    @Test(expected = UnableToLoginException::class)
+    @Test(expected = ApiException.UnableToLoginException::class)
     fun `getPosts() - user is not allowed to login - should throw UnableToLoginException`() =
         runTest {
             // arrange
             coEvery { loginRepository.isUserAuthenticated() } returns false
-            coEvery { loginRepository.login(any(), any()) } throws UnableToLoginException()
+            coEvery {
+                loginRepository.login(
+                    any(),
+                    any()
+                )
+            } throws ApiException.UnableToLoginException()
 
             // act
             postsUseCase.getPosts()

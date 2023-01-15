@@ -1,7 +1,6 @@
 package life.league.challenge.kotlin.data
 
-import life.league.challenge.kotlin.commom.exceptions.UnableToGetPostsException
-import life.league.challenge.kotlin.commom.exceptions.UnableToGetUsersException
+import life.league.challenge.kotlin.commom.exceptions.ApiException
 import life.league.challenge.kotlin.data.api.PostsApi
 import life.league.challenge.kotlin.data.api.UsersApi
 import life.league.challenge.kotlin.data.extensions.toDomain
@@ -16,7 +15,7 @@ class PostsRepositoryImpl(
         val loadedUsers = usersApi.getUsers().map {
             it.toDomain()
         }
-        if (loadedUsers.isEmpty()) throw UnableToGetUsersException()
+        if (loadedUsers.isEmpty()) throw ApiException.UnableToGetUsersException()
 
         val postsList: MutableList<Post> = mutableListOf()
         postsApi.getPosts().map { postItem ->
@@ -28,7 +27,7 @@ class PostsRepositoryImpl(
             }
         }
 
-        if (postsList.isEmpty()) throw UnableToGetPostsException()
+        if (postsList.isEmpty()) throw ApiException.UnableToGetPostsException()
 
         return postsList
     }
